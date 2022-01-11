@@ -2,38 +2,27 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import TodoItem from './TodoItem';
+import {applyFilter} from './../services/filter';
 
 function TodoList(props) {
-  const { title, items, addNewItem, filter, changeFilter } = props;
-  const count = items.length;
-  const filteredList = applyFilter(items, filter);
+    const {title, items, addNew, filter, changeFilter} = props;
+    const count = items.length;
+    const filteredList = applyFilter(items, filter);
 
-  return (
-    <div className="todolist">
-      <Header title={title} addNewItem={addNewItem} />
-      <ul className="list-group list-group-flush">
-        {filteredList.length === 0 ? (
-          <div className="alert alert-secondary">No items in the list.</div>
-        ) : (
-          filteredList.map(item => <TodoItem key={item.id} data={item} />)
-        )}
-      </ul>
-      <Footer {...{ count, filter, changeFilter }} />
-    </div>
-  );
-}
-
-function applyFilter(list, filter) {
-  switch (filter) {
-    case 'completed':
-      return list.filter(item => item.completed === true);
-
-    case 'active':
-      return list.filter(item => item.completed !== true);
-
-    default:
-      return list;
-  }
+    return (
+        <div className="todolist">
+            <Header title={title} addNew={addNew}/>
+            {filteredList.length > 0
+                ? (
+                    <ul className="list-unstyled">
+                        {filteredList.map(item => <TodoItem key={item.id} data={item}/>)}
+                    </ul>
+                )
+                : <p className="alert alert-info">There are no items.</p>
+            }
+            <Footer {...{count, filter, changeFilter}}/>
+        </div>
+    );
 }
 
 export default TodoList;

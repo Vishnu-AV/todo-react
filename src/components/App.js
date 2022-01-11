@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import TodoList from './TodoList';
 
-const ITEMS_INITIAL_STATE = [
+const ITEMS_DEFAULT = [
   {
     id: 1,
     text: 'Learn Javascript',
@@ -18,13 +18,14 @@ const ITEMS_INITIAL_STATE = [
     completed: false
   }
 ];
+const FILTER_DEFAULT = 'active';
 
 function App() {
   const title = 'Things to do';
-  const [items, updateItems] = useState(ITEMS_INITIAL_STATE);
-  const addNewItem = useCallback(    
+  const [items, updateItems] = useState(ITEMS_DEFAULT);
+  const [filter, setFilter] = useState(FILTER_DEFAULT);
+  const addNewItem = useCallback(
     text => {
-      debugger
       updateItems(items => {
         const nextId = items.length + 1;
         const newItem = {
@@ -37,11 +38,12 @@ function App() {
     },
     [updateItems]
   );
+  const changeFilter = useCallback(value => setFilter(value), [setFilter]);
 
   return (
     <div className="container">
       <div className="row">
-        <TodoList title={title} items={items} addNewItem={addNewItem} />
+        <TodoList title={title} items={items} filter={filter} addNewItem={addNewItem} changeFilter={changeFilter} />
       </div>
     </div>
   );
